@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Topics;
+namespace Ciebit\Leads\Entities\Topics;
 
 final class Topic
 {

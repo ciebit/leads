@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Tests\Contributors;
+namespace Ciebit\Leads\Tests\Entities\Contributors;
 
-use Ciebit\Leads\Contributors\Collection;
-use Ciebit\Leads\Contributors\Contributor;
+use Ciebit\Leads\Entities\Contributors\Collection;
+use Ciebit\Leads\Entities\Contributors\Contributor;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase

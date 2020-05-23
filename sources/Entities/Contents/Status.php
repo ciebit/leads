@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Contents;
+namespace Ciebit\Leads\Entities\Contents;
 
 use MyCLabs\Enum\Enum;
 

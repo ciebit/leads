@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Contributors;
+namespace Ciebit\Leads\Entities\Contributors;
 
 final class Contributor
 {

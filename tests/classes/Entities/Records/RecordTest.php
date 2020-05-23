@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Tests\Records;
+namespace Ciebit\Leads\Tests\Entities\Records;
 
-use Ciebit\Leads\Records\Record;
+use Ciebit\Leads\Entities\Records\Record;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 

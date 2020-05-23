@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Contents;
+namespace Ciebit\Leads\Entities\Contents;
 
-use Ciebit\Leads\Contents\Content;
-use Ciebit\Leads\Contents\Status;
-use Ciebit\Leads\Contributors\Collection as ContributorsCollection;
-use Ciebit\Leads\Topics\Collection as TopicsCollection;
+use Ciebit\Leads\Entities\Contents\Content;
+use Ciebit\Leads\Entities\Contents\Status;
+use Ciebit\Leads\Entities\Contributors\Collection as ContributorsCollection;
+use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
 use DateTimeInterface;
 
 final class Webinar implements Content

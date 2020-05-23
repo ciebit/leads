@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Records;
+namespace Ciebit\Leads\Entities\Records;
 
-use Ciebit\Leads\Records\Record;
+use Ciebit\Leads\Entities\Records\Record;
 use DateTimeImmutable;
 
 final class Builder

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Topics;
+namespace Ciebit\Leads\Entities\Messages;
 
-use Ciebit\Leads\Topics\Topic;
+use Ciebit\Leads\Entities\Messages\Message;
 use ArrayIterator;
 use ArrayObject;
 use Countable;
@@ -15,10 +15,10 @@ final class Collection implements Countable, IteratorAggregate, JsonSerializable
 {
     private ArrayObject $items;
 
-    public function __construct(Topic ...$topics)
+    public function __construct(Message ...$messageList)
     {
         $this->items = new ArrayObject();
-        $this->add(...$topics);
+        $this->add(...$messageList);
     }
 
     public function __clone()
@@ -26,10 +26,10 @@ final class Collection implements Countable, IteratorAggregate, JsonSerializable
         $this->items = clone $this->items;
     }
 
-    public function add(Topic ...$topicList): self
+    public function add(Message ...$messageList): self
     {
-        foreach ($topicList as $topic) {
-            $this->items->append($topic);
+        foreach ($messageList as $message) {
+            $this->items->append($message);
         }
 
         return $this;

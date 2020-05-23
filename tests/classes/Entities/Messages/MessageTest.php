@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Tests\Records;
+namespace Ciebit\Leads\Tests\Entities\Records;
 
-use Ciebit\Leads\Messages\Message;
+use Ciebit\Leads\Entities\Messages\Message;
 use PHPUnit\Framework\TestCase;
 
 class MessageTest extends TestCase

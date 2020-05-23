@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Contributors;
+namespace Ciebit\Leads\Entities\Contributors;
 
-use Ciebit\Leads\Contributors\Contributor;
+use Ciebit\Leads\Entities\Contributors\Contributor;
 use ArrayIterator;
 use ArrayObject;
 use Countable;

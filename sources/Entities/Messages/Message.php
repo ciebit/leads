@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Messages;
+namespace Ciebit\Leads\Entities\Messages;
 
 final class Message
 {

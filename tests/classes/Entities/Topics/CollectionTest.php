@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Tests\Topics;
+namespace Ciebit\Leads\Tests\Entities\Topics;
 
-use Ciebit\Leads\Topics\Collection;
-use Ciebit\Leads\Topics\Topic;
+use Ciebit\Leads\Entities\Topics\Collection;
+use Ciebit\Leads\Entities\Topics\Topic;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase

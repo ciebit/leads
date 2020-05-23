@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Tests\Contents;
+namespace Ciebit\Leads\Tests\Entities\Contents;
 
-use Ciebit\Leads\Contents\Collection;
-use Ciebit\Leads\Contents\Status;
-use Ciebit\Leads\Contents\Webinar;
-use Ciebit\Leads\Topics\Collection as TopicsCollection;
-use Ciebit\Leads\Contributors\Collection as ContributorsCollection;
+use Ciebit\Leads\Entities\Contents\Collection;
+use Ciebit\Leads\Entities\Contents\Status;
+use Ciebit\Leads\Entities\Contents\Webinar;
+use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
+use Ciebit\Leads\Entities\Contributors\Collection as ContributorsCollection;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

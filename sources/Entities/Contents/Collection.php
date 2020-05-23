@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Contents;
+namespace Ciebit\Leads\Entities\Contents;
 
-use Ciebit\Leads\Contents\Content;
+use Ciebit\Leads\Entities\Contents\Content;
 use ArrayIterator;
 use ArrayObject;
 use Countable;

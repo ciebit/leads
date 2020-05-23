@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ciebit\Leads\Records;
+namespace Ciebit\Leads\Entities\Records;
 
 use DateTimeImmutable;
 
