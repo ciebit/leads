@@ -1,0 +1,39 @@
+{
+    "name": "ciebit/leads",
+    "description": "Representação do conteúdo e registro na captura de leads",
+    "keywords": [
+        "leads"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/ciebit/leads/issues",
+        "source": "https://github.com/ciebit/leads"
+    },
+    "authors": [
+        {
+            "name": "Johnny Saymon",
+            "email": "saymon@ciebit.com",
+            "homepage": "http://saymon.ciebit.com",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ciebit\\Leads\\": "sources/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ciebit\\Leads\\Tests\\": "tests/classes/"
+        }
+    },
+    "require": {
+        "php": "^7.4",
+        "myclabs/php-enum": "^1.7"
+    },
+    "require-dev": {
+        "php": "^7.4",
+        "phpunit/phpunit": "^9.0"
+    }
+}
