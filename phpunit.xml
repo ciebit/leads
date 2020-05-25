@@ -5,8 +5,11 @@
     verbose="true"
 >
     <testsuites>
-        <testsuite name="Ciebit Leads Tests">
-            <directory>./tests/</directory>
+        <testsuite name="entities">
+            <directory>./tests/classes/Entities</directory>
+        </testsuite>
+        <testsuite name="storages">
+            <directory>./tests/classes/Storages</directory>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Ciebit\Leads\Tests\Storages\Records\Database;
+
+use Ciebit\Leads\Entities\Records\Record;
+use Ciebit\Leads\Storages\Records\Database\Sql;
+use Ciebit\Leads\Tests\Factories\Pdo as PdoFactory;
+use PHPUnit\Framework\TestCase;
+
+class SqlTest extends TestCase
+{
+    public function testStore(): void
+    {
+        $record = new Record('1', 'Name', 'name@mail.com', '8812341234', 2);
+        $storage = $this->getStorage();
+        $recordStored = $storage->store($record);
+
+        $this->assertEquals('1', $recordStored->getId());
+    }
+
+    private function getStorage(): Sql
+    {
+        $pdoFactory = new PdoFactory();
+
+        return new Sql(
+            $pdoFactory->create()
+        );
+    }
+}
