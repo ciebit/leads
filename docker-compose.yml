@@ -1,0 +1,28 @@
+version: '3'
+services:
+  composer:
+    image: composer
+    volumes:
+      - .:/project
+    working_dir: /project
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: leads
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./environments/database:/docker-entrypoint-initdb.d
+
+  tests:
+    build: './environments/docker'
+    restart: never
+    volumes: 
+        - .:/project
+    working_dir: /project
+    entrypoint: vendor/bin/phpunit
+    links:
+      - db
