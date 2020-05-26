@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Ciebit\Leads\Entities\Topics;
 
-final class Topic
+use JsonSerializable;
+
+final class Topic implements JsonSerializable
 {
     private string $title;
 
@@ -16,5 +18,12 @@ final class Topic
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'title' => $this->getTitle()
+        ];
     }
 }

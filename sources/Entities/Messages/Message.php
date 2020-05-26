@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Ciebit\Leads\Entities\Messages;
 
-final class Message
+use JsonSerializable;
+
+final class Message implements JsonSerializable
 {
     private string $body;
     private string $contentId;
@@ -33,5 +35,14 @@ final class Message
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'body' => $this->getBody(),
+            'contentId' => $this->getContentId(),
+        ];
     }
 }

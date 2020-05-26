@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Ciebit\Leads\Entities\Records;
 
 use DateTimeImmutable;
+use JsonSerializable;
 
-final class Record
+final class Record implements JsonSerializable
 {
     private string $contentId;
     private DateTimeImmutable $dateTime;
@@ -69,5 +70,18 @@ final class Record
     public function getProfileId(): int
     {
         return $this->profileId;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'contentId' => $this->getContentId(),
+            'dateTime' => $this->getDateTime()->format('Y-m-d H:i:s'),
+            'email' => $this->getEmail(),
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'phone' => $this->getPhone(),
+            'profileId' => $this->getProfileId(),
+        ];
     }
 }

@@ -16,4 +16,24 @@ class ContributorTest extends TestCase
         $this->assertEquals('2', $contributor->getPersonId());
         $this->assertEquals('Subject', $contributor->getSubject());
     }
+
+    public function testJsonSerealize(): void
+    {
+        $data = [
+            'personId' => '1',
+            'subject' => 'Subject',
+            'id' => '2'
+        ];
+
+        $contributor = new Contributor(
+            $data['personId'], 
+            $data['subject'],
+            $data['id']
+        );
+
+        $this->assertJsonStringEqualsJsonString(
+            json_encode($data),
+            json_encode($contributor)
+        );
+    }
 }

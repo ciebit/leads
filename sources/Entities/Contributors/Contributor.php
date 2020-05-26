@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Ciebit\Leads\Entities\Contributors;
 
-final class Contributor
+use JsonSerializable;
+
+final class Contributor implements JsonSerializable
 {
     private string $id;
     private string $personId;
@@ -33,5 +35,14 @@ final class Contributor
     public function getSubject(): string
     {
         return $this->subject;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'personId' => $this->getPersonId(),
+            'subject' => $this->getSubject(),
+        ];
     }
 }

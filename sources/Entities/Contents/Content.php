@@ -7,8 +7,9 @@ namespace Ciebit\Leads\Entities\Contents;
 use Ciebit\Leads\Entities\Contents\Status;
 use Ciebit\Leads\Entities\Contributors\Collection as ContributorsCollection;
 use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
+use JsonSerializable;
 
-interface Content
+interface Content extends JsonSerializable
 {
     public function getAuthors(): ContributorsCollection;
 

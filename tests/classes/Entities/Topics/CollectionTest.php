@@ -34,4 +34,19 @@ class CollectionTest extends TestCase
         $collection = new Collection();
         $this->assertCount(0, $collection);
     }
+
+    public function testJsonSerialize(): void
+    {
+        $topic1 = new Topic('Title 01');
+        $topic2 = new Topic('Title 02');
+        $collection = new Collection($topic1, $topic2);
+
+        $this->assertJsonStringEqualsJsonString(
+            json_encode([
+                ['title' => 'Title 01'], 
+                ['title' => 'Title 02']
+            ]),
+            json_encode($collection)
+        );
+    }
 }

@@ -119,4 +119,22 @@ final class Webinar implements Content
     {
         return self::TYPE;
     }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'authors' => $this->getAuthors(),
+            'content' => $this->getContent(),
+            'coverId' => $this->getCoverId(),
+            'dateTime' => $this->getDateTime()->format(DateTimeInterface::W3C),
+            'description' => $this->getDescription(),
+            'formLink' => $this->getFormLink(),
+            'guests' => $this->getGuests(),
+            'id' => $this->getId(),
+            'slug' => $this->getSlug(),
+            'status' => $this->getStatus()->getValue(),
+            'title' => $this->getTitle(),
+            'topics' => $this->getTopics(),
+        ];
+    }
 }

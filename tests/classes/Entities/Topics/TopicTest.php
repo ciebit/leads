@@ -14,4 +14,13 @@ class TopicTest extends TestCase
         $topic = new Topic('Title');
         $this->assertEquals('Title', $topic->getTitle());
     }
+
+    public function testJsonSerialize(): void
+    {
+        $topic = new Topic('Title');
+        $this->assertJsonStringEqualsJsonString(
+            json_encode(['title' => 'Title']),
+            json_encode($topic)
+        );
+    }
 }

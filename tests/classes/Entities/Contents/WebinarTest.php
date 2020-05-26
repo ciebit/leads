@@ -47,4 +47,42 @@ class WebinarTest extends TestCase
         $this->assertEquals($status, $webinar->getStatus());
         $this->assertEquals('http://form-link.com', $webinar->getFormLink());
     }
+
+    public function testJsonSerialize(): void
+    {
+        $data = [
+            'id' => '2',
+            'title' => 'Title',
+            'slug' => 'title-slug',
+            'description' => 'Description',
+            'content' => 'Content',
+            'dateTime' => '2020-05-26T19:20:42-03:00',
+            'topics' => [],
+            'authors' => [],
+            'guests' => [],
+            'coverId' => '5',
+            'status' => Status::ACTIVE,
+            'formLink' => 'http://form-link.com'
+        ];
+
+        $webinar = new Webinar(
+            $data['title'],
+            $data['slug'],
+            $data['description'],
+            $data['content'],
+            new DateTime($data['dateTime']),
+            new TopicsCollection(),
+            new ContributorsCollection(),
+            new ContributorsCollection(),
+            $data['coverId'],
+            new Status($data['status']),
+            $data['formLink'],
+            $data['id']
+        );
+
+        $this->assertJsonStringEqualsJsonString(
+            json_encode($data),
+            json_encode($webinar)
+        );
+    }
 }

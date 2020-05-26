@@ -24,4 +24,40 @@ class CollectionTest extends TestCase
 
         $this->assertCount(5, $collection);
     }
+
+    public function testJsonSerealize(): void
+    {
+        $collection = new Collection();
+        $data = [
+            [
+                'personId' => '1',
+                'subject' => 'Subject 1',
+                'id' => '2'
+            ],
+            [
+                'personId' => '3',
+                'subject' => 'Subject 2',
+                'id' => '5'
+            ],
+            [
+                'personId' => '4',
+                'subject' => 'Subject 3',
+                'id' => '5'
+            ]
+        ];
+
+        foreach($data as $contributorData) {
+            $contributor = new Contributor(
+                $contributorData['personId'],
+                $contributorData['subject'],
+                $contributorData['id']
+            );
+            $collection->add($contributor);
+        }
+
+        $this->assertJsonStringEqualsJsonString(
+            json_encode($data),
+            json_encode($collection)
+        );
+    }
 }

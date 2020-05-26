@@ -70,4 +70,63 @@ class CollectionTest extends TestCase
         $this->assertEquals($webinar2, $collection->getArrayObject()->offsetGet(1));
         $this->assertEquals($webinar3, $collection->getArrayObject()->offsetGet(2));
     }
+
+    public function testJsonSerialize(): void
+    {
+        $data = [
+            [
+                'id' => '2',
+                'title' => 'Title 01',
+                'slug' => 'slug-01',
+                'description' => 'Description 01',
+                'content' => 'Content 01',
+                'dateTime' => '2020-05-26T19:20:42-03:00',
+                'topics' => [],
+                'authors' => [],
+                'guests' => [],
+                'coverId' => '5',
+                'status' => Status::ACTIVE,
+                'formLink' => 'http://form-link-1.com'
+            ],
+            [
+                'id' => '3',
+                'title' => 'Title 02',
+                'slug' => 'slug-02',
+                'description' => 'Description 02',
+                'content' => 'Content 02',
+                'dateTime' => '2020-04-25T14:23:48-03:00',
+                'topics' => [],
+                'authors' => [],
+                'guests' => [],
+                'coverId' => '6',
+                'status' => Status::INACTIVE,
+                'formLink' => 'http://form-link-2.com'
+            ]
+        ];
+
+        $collection = new Collection();
+
+        foreach($data as $webinarData) {
+            $webinar = new Webinar(
+                $webinarData['title'],
+                $webinarData['slug'],
+                $webinarData['description'],
+                $webinarData['content'],
+                new DateTime($webinarData['dateTime']),
+                new TopicsCollection(),
+                new ContributorsCollection(),
+                new ContributorsCollection(),
+                $webinarData['coverId'],
+                new Status($webinarData['status']),
+                $webinarData['formLink'],
+                $webinarData['id']
+            );
+            $collection->add($webinar);
+        }
+
+        $this->assertJsonStringEqualsJsonString(
+            json_encode($data),
+            json_encode($collection)
+        );
+    }
 }
