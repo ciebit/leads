@@ -40,20 +40,36 @@ final class Sql implements Database
     private const EXCEPTION_PREFIX = 'app.storages.leads.contents';
     private const TOPIC_TITLE = 'title';
 
+    private string $filterId;
     private string $filterSlug;
+    private ?Status $filterStatus;
     private PDO $pdo;
     private string $table;
 
     public function __construct(PDO $pdo)
     {
+        $this->filterId = '';
         $this->filterSlug = '';
+        $this->filterStatus = null;
         $this->pdo = $pdo;
         $this->table = 'leads_content_view';
+    }
+
+    public function addFilterById(string $id): self
+    {
+        $this->filterId = $id;
+        return $this;
     }
 
     public function addFilterBySlug(string $slug): self
     {
         $this->filterSlug = $slug;
+        return $this;
+    }
+
+    public function addFilterByStatus(Status $status): self
+    {
+        $this->filterStatus = $status;
         return $this;
     }
 
@@ -174,6 +190,16 @@ final class Sql implements Database
             $sqlWhere = "`{$this->table}`.`{$column}` = :slug";
         }
 
+        if ($this->filterId != '') {
+            $column = self::COLUMN_ID;
+            $sqlWhere = "`{$this->table}`.`{$column}` = :id";
+        }
+
+        if ($this->filterStatus != null) {
+            $column = self::COLUMN_STATUS;
+            $sqlWhere = "`{$this->table}`.`{$column}` = :status";
+        }
+
         $querySql = "SELECT `{$this->table}`.*
             FROM `{$this->table}`
             WHERE {$sqlWhere}";
@@ -189,6 +215,14 @@ final class Sql implements Database
 
         if ($this->filterSlug != '') {
             $statement->bindValue(':slug', $this->filterSlug, PDO::PARAM_STR);
+        }
+
+        if ($this->filterId != '') {
+            $statement->bindValue(':id', $this->filterId, PDO::PARAM_INT);
+        }
+
+        if ($this->filterStatus != null) {
+            $statement->bindValue(':status', $this->filterStatus->getValue(), PDO::PARAM_INT);
         }
 
         if ($statement->execute() === false) {

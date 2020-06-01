@@ -57,6 +57,18 @@ INSERT INTO `leads_content` (
     NULL,
     NULL,
     3
+), (
+    3,
+    'webinar',
+    'Title 03', 
+    'Description 03',
+    '<p>Content 03</p>',
+    '2020-04-29 10:32:00',
+    4,
+    'slug-03',
+    'http://localhost/03/',
+    '[{"title": "Topic 04"}, {"title": "Topic 05"}]',
+    0
 );
 
 
