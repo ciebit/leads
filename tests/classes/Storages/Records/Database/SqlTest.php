@@ -20,6 +20,11 @@ class SqlTest extends TestCase
         $this->assertEquals('1', $recordStored->getId());
     }
 
+    protected function setUp(): void
+    {
+        $this->emptyTable();
+    }
+
     private function getStorage(): Sql
     {
         $pdoFactory = new PdoFactory();
@@ -27,5 +32,12 @@ class SqlTest extends TestCase
         return new Sql(
             $pdoFactory->create()
         );
+    }
+
+    private function emptyTable(): void
+    {
+        $pdoFactory = new PdoFactory();
+        $pdo = $pdoFactory->create();
+        $pdo->exec('TRUNCATE TABLE `leads_records`');
     }
 }

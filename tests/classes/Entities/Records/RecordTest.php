@@ -38,7 +38,7 @@ class RecordTest extends TestCase
             'email' => 'contact@mail.com',
             'phone' => '0012341234',
             'profileId' => 3,
-            'dateTime' => '2020-05-26 16:20:22'
+            'dateTime' => '2020-05-26T16:20:22-03:00'
         ];
 
         $record = new Record(
