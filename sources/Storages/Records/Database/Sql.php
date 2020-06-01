@@ -42,6 +42,12 @@ final class Sql implements Database
         return $this;
     }
 
+    public function addFilterById(string $id): self
+    {
+        $this->filterId = $id;
+        return $this;
+    }
+
     public function find(): Collection
     {
         $sqlWhere = '1';
