@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Ciebit\Leads\Storages\Records\Database;
 
 use Ciebit\Leads\Entities\Records\Builder;
+use Ciebit\Leads\Entities\Records\Collection;
 use Ciebit\Leads\Entities\Records\Record;
 use Ciebit\Leads\Exceptions\Storage as ExceptionStorage;
 use Ciebit\Leads\Storages\Records\Database\Database;
+use DateTimeImmutable;
 use PDO;
 
 final class Sql implements Database
@@ -21,13 +23,55 @@ final class Sql implements Database
     private const COLUMN_PROFILE_ID = 'profile_id';
     private const EXCEPTION_PREFIX = 'app.storages.leads.records';
 
+    private string $filterId;
     private PDO $pdo;
     private string $table;
 
     public function __construct(PDO $pdo)
     {
+        $this->filterId = '';
         $this->pdo = $pdo;
         $this->table = 'leads_records';
+    }
+
+    public function find(): Collection
+    {
+        $sqlWhere = '1';
+
+        if ($this->filterId != '') {
+            $column = self::COLUMN_ID;
+            $sqlWhere = "`{$this->table}`.`{$column}` = :id";
+        }
+
+        $querySql = "SELECT `{$this->table}`.*
+            FROM `{$this->table}`
+            WHERE {$sqlWhere}";
+
+        $statement = $this->pdo->prepare($querySql);
+
+        if ($statement === false) {
+            throw new ExceptionStorage(self::EXCEPTION_PREFIX . '.sintaxe-error', 1);
+        }
+
+        /** @var \PDOStatement $statement */
+
+        if ($this->filterId != '') {
+            $statement->bindValue(':id', $this->filterId, PDO::PARAM_INT);
+        }
+
+        if ($statement->execute() === false) {
+            error_log($statement->errorInfo()[2]);
+            throw new ExceptionStorage(self::EXCEPTION_PREFIX . '.execute-error', 2);
+        }
+
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!is_array($data)) {
+            error_log('Fetch error: ' . $querySql);
+            throw new ExceptionStorage(self::EXCEPTION_PREFIX . '.fetch-error', 3);
+        }
+
+        return $this->build($data);
     }
 
     public function store(Record $record): Record
@@ -80,6 +124,34 @@ final class Sql implements Database
         $builder->copy($record);
         $builder->setId($id);
 
+        return $builder->build();
+    }
+
+    private function build(array $data): Collection
+    {
+        $collection = new Collection();
+
+        foreach($data as $recordData) {
+            $record = $this->buildRecord($recordData);
+            $collection->add($record);
+        }
+
+        return $collection;
+    }
+
+    private function buildRecord(array $recordData): Record
+    {
+        $builder = new Builder();
+
+        $builder
+            ->setId($recordData[self::COLUMN_ID])
+            ->setContentId($recordData[self::COLUMN_CONTENT_ID])
+            ->setEmail($recordData[self::COLUMN_EMAIL])
+            ->setName($recordData[self::COLUMN_NAME])
+            ->setPhone($recordData[self::COLUMN_PHONE])
+            ->setProfileId((int) $recordData[self::COLUMN_PROFILE_ID])
+            ->setDateTime(new DateTimeImmutable($recordData[self::COLUMN_DATE_TIME]));
+        
         return $builder->build();
     }
 }

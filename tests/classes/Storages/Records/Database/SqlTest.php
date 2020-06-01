@@ -11,18 +11,26 @@ use PHPUnit\Framework\TestCase;
 
 class SqlTest extends TestCase
 {
+    public function testFind(): void
+    {
+        $storage = $this->getStorage();
+        $collection = $storage->find();
+
+        $this->assertCount(3, $collection);
+    }
+
     public function testStore(): void
     {
         $record = new Record('1', 'Name', 'name@mail.com', '8812341234', 2);
         $storage = $this->getStorage();
         $recordStored = $storage->store($record);
 
-        $this->assertEquals('1', $recordStored->getId());
+        $this->assertEquals('4', $recordStored->getId());
     }
 
     protected function setUp(): void
     {
-        $this->emptyTable();
+        $this->setDefaultDatabase();
     }
 
     private function getStorage(): Sql
@@ -34,10 +42,11 @@ class SqlTest extends TestCase
         );
     }
 
-    private function emptyTable(): void
+    private function setDefaultDatabase(): void
     {
         $pdoFactory = new PdoFactory();
         $pdo = $pdoFactory->create();
         $pdo->exec('TRUNCATE TABLE `leads_records`');
+        $pdo->exec(file_get_contents(__DIR__ . '/../../../../data/records.sql'));
     }
 }
