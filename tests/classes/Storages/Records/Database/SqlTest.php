@@ -19,6 +19,16 @@ class SqlTest extends TestCase
         $this->assertCount(3, $collection);
     }
 
+    public function testFindByContentId(): void
+    {
+        $storage = $this->getStorage();
+        $storage->addFilterByContentId('4');
+        $collection = $storage->find();
+
+        $this->assertCount(1, $collection);
+        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
     public function testStore(): void
     {
         $record = new Record('1', 'Name', 'name@mail.com', '8812341234', 2);

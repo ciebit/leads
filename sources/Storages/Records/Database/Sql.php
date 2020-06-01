@@ -23,20 +23,33 @@ final class Sql implements Database
     private const COLUMN_PROFILE_ID = 'profile_id';
     private const EXCEPTION_PREFIX = 'app.storages.leads.records';
 
+    private string $filterContentId;
     private string $filterId;
     private PDO $pdo;
     private string $table;
 
     public function __construct(PDO $pdo)
     {
+        $this->filterContentId = '';
         $this->filterId = '';
         $this->pdo = $pdo;
         $this->table = 'leads_records';
     }
 
+    public function addFilterByContentId(string $id): self
+    {
+        $this->filterContentId = $id;
+        return $this;
+    }
+
     public function find(): Collection
     {
         $sqlWhere = '1';
+
+        if ($this->filterContentId != '') {
+            $column = self::COLUMN_CONTENT_ID;
+            $sqlWhere = "`{$this->table}`.`{$column}` = :content_id";
+        }
 
         if ($this->filterId != '') {
             $column = self::COLUMN_ID;
@@ -54,6 +67,10 @@ final class Sql implements Database
         }
 
         /** @var \PDOStatement $statement */
+
+        if ($this->filterContentId != '') {
+            $statement->bindValue(':content_id', $this->filterContentId, PDO::PARAM_INT);
+        }
 
         if ($this->filterId != '') {
             $statement->bindValue(':id', $this->filterId, PDO::PARAM_INT);

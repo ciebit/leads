@@ -9,6 +9,8 @@ use Ciebit\Leads\Entities\Records\Record;
 
 interface Storage
 {
+    public function addFilterByContentId(string $id): self;
+
     public function find(): Collection;
 
     public function store(Record $record): Record;
