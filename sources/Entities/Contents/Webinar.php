@@ -7,6 +7,7 @@ namespace Ciebit\Leads\Entities\Contents;
 use Ciebit\Leads\Entities\Contents\Content;
 use Ciebit\Leads\Entities\Contents\Status;
 use Ciebit\Leads\Entities\Contributors\Collection as ContributorsCollection;
+use Ciebit\Leads\Entities\DateTime\DateTime;
 use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
 use DateTimeInterface;
 
@@ -17,7 +18,7 @@ final class Webinar implements Content
     private ContributorsCollection $authors;
     private string $content;
     private string $coverId;
-    private DateTimeInterface $dateTime;
+    private DateTime $dateTime;
     private string $description;
     private string $formLink;
     private ContributorsCollection $guests;
@@ -32,7 +33,7 @@ final class Webinar implements Content
         string $slug,
         string $description,
         string $content,
-        DateTimeInterface $dateTime,
+        DateTime $dateTime,
         TopicsCollection $topics,
         ContributorsCollection $authors,
         ContributorsCollection $guests,
@@ -70,7 +71,7 @@ final class Webinar implements Content
         return $this->coverId;
     }
 
-    public function getDateTime(): DateTimeInterface
+    public function getDateTime(): DateTime
     {
         return clone $this->dateTime;
     }

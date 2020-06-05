@@ -6,9 +6,10 @@ namespace Ciebit\Leads\Tests\Entities\Contents;
 
 use Ciebit\Leads\Entities\Contents\Status;
 use Ciebit\Leads\Entities\Contents\Webinar;
-use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
 use Ciebit\Leads\Entities\Contributors\Collection as ContributorsCollection;
-use DateTime;
+use Ciebit\Leads\Entities\DateTime\Defined as DateTimeDefined;
+use Ciebit\Leads\Entities\DateTime\Undefined as DateTimeUndefined;
+use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
 use PHPUnit\Framework\TestCase;
 
 class WebinarTest extends TestCase
@@ -18,7 +19,7 @@ class WebinarTest extends TestCase
         $topics = new TopicsCollection();
         $authors = new ContributorsCollection();
         $guests = new ContributorsCollection();
-        $dateTime = new DateTime();
+        $dateTime = new DateTimeUndefined();
         $status = new Status(Status::ACTIVE);
 
         $webinar = new Webinar(
@@ -70,7 +71,7 @@ class WebinarTest extends TestCase
             $data['slug'],
             $data['description'],
             $data['content'],
-            new DateTime($data['dateTime']),
+            new DateTimeDefined($data['dateTime']),
             new TopicsCollection(),
             new ContributorsCollection(),
             new ContributorsCollection(),
