@@ -185,26 +185,31 @@ final class Sql implements Database
 
     public function find(): Collection
     {
+        $filters = [];
         $sqlWhere = '1';
 
         if ($this->filterSlug != '') {
             $column = self::COLUMN_SLUG;
-            $sqlWhere = "`{$this->table}`.`{$column}` = :slug";
+            $filters[] = "`{$this->table}`.`{$column}` = :slug";
         }
 
         if ($this->filterId != '') {
             $column = self::COLUMN_ID;
-            $sqlWhere = "`{$this->table}`.`{$column}` = :id";
+            $filters[] = "`{$this->table}`.`{$column}` = :id";
         }
 
         if ($this->filterStatus != null) {
             $column = self::COLUMN_STATUS;
-            $sqlWhere = "`{$this->table}`.`{$column}` = :status";
+            $filters[] = "`{$this->table}`.`{$column}` = :status";
         }
 
         if ($this->filterType != null) {
             $column = self::COLUMN_TYPE;
-            $sqlWhere = "`{$this->table}`.`{$column}` = :type";
+            $filters[] = "`{$this->table}`.`{$column}` = :type";
+        }
+
+        if (empty($filters) == false) {
+            $sqlWhere = implode(' AND ', $filters);
         }
 
         $querySql = "SELECT `{$this->table}`.*
@@ -237,7 +242,9 @@ final class Sql implements Database
         }
 
         if ($statement->execute() === false) {
-            error_log($statement->errorInfo()[2]);
+            if (isset($statement->errorInfo()[2])) {
+                error_log($statement->errorInfo()[2]);
+            }
             throw new ExceptionStorage(self::EXCEPTION_PREFIX . '.execute-error', 2);
         }
 

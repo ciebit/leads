@@ -50,16 +50,21 @@ final class Sql implements Database
 
     public function find(): Collection
     {
+        $filters = [];
         $sqlWhere = '1';
 
         if ($this->filterContentId != '') {
             $column = self::COLUMN_CONTENT_ID;
-            $sqlWhere = "`{$this->table}`.`{$column}` = :content_id";
+            $filters[] = "`{$this->table}`.`{$column}` = :content_id";
         }
 
         if ($this->filterId != '') {
             $column = self::COLUMN_ID;
-            $sqlWhere = "`{$this->table}`.`{$column}` = :id";
+            $filters[] = "`{$this->table}`.`{$column}` = :id";
+        }
+
+        if (empty($filters) == false) {
+            $sqlWhere = implode(' AND ', $filters);
         }
 
         $querySql = "SELECT `{$this->table}`.*
@@ -83,7 +88,9 @@ final class Sql implements Database
         }
 
         if ($statement->execute() === false) {
-            error_log($statement->errorInfo()[2]);
+            if (isset($statement->errorInfo()[2])) {
+                error_log($statement->errorInfo()[2]);
+            }
             throw new ExceptionStorage(self::EXCEPTION_PREFIX . '.execute-error', 2);
         }
 

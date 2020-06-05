@@ -65,6 +65,19 @@ class SqlTest extends TestCase
         $this->assertEquals('4', $content->getId());
     }
 
+    public function testCombinationOfFilters(): void
+    {
+        $storage = $this->getStorage();
+        $storage
+            ->addFilterByType('webinar')
+            ->addFilterByStatus(new Status(Status::INACTIVE));
+        $collection = $storage->find();
+        $content = $collection->getArrayObject()->offsetGet(0);
+        
+        $this->assertCount(1, $collection);
+        $this->assertEquals('3', $content->getId());
+    }
+
     private function getStorage(): Sql
     {
         $pdoFactory = new PdoFactory();

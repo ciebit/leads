@@ -77,7 +77,9 @@ final class Sql implements Database
         }
 
         if ($statement->execute() === false) {
-            error_log($statement->errorInfo()[2]);
+            if (isset($statement->errorInfo()[2])) {
+                error_log($statement->errorInfo()[2]);
+            }
             throw new ExceptionStorage(self::EXCEPTION_PREFIX . '.execute-error', 2);
         }
 
