@@ -50,8 +50,19 @@ class SqlTest extends TestCase
         $collection = $storage->find();
         $content = $collection->getArrayObject()->offsetGet(0);
         
-        $this->assertCount(1, $collection);
+        $this->assertCount(2, $collection);
         $this->assertEquals('3', $content->getId());
+    }
+
+    public function testFindByType(): void
+    {
+        $storage = $this->getStorage();
+        $storage->addFilterByType('ebook');
+        $collection = $storage->find();
+        $content = $collection->getArrayObject()->offsetGet(0);
+        
+        $this->assertCount(1, $collection);
+        $this->assertEquals('4', $content->getId());
     }
 
     private function getStorage(): Sql

@@ -69,6 +69,18 @@ INSERT INTO `leads_content` (
     'http://localhost/03/',
     '[{"title": "Topic 04"}, {"title": "Topic 05"}]',
     0
+), (
+    4,
+    'ebook',
+    'Title 04', 
+    'Description 04',
+    '<p>Content 04</p>',
+    '2020-05-03 09:20:00',
+    4,
+    'slug-04',
+    'http://localhost/04/',
+    '[{"title": "Topic 06"}, {"title": "Topic 07"}]',
+    0
 );
 
 

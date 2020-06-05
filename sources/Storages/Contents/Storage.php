@@ -13,6 +13,8 @@ interface Storage
 
     public function addFilterBySlug(string $slug): self;
 
+    public function addFilterByType(string $type): self;
+
     public function addFilterByStatus(Status $status): self;
 
     public function find(): Collection;

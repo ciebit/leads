@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Ciebit\Leads\Storages\Contents\Database;
 
+use Ciebit\Leads\Builders\Contents\Context as ContextBuilder;
+use Ciebit\Leads\Builders\Contents\Data as BuilderData;
 use Ciebit\Leads\Entities\Contents\Collection;
 use Ciebit\Leads\Entities\Contents\Content;
-use Ciebit\Leads\Entities\Contents\Webinar;
 use Ciebit\Leads\Entities\Contents\Status;
 use Ciebit\Leads\Entities\Contributors\Contributor;
 use Ciebit\Leads\Entities\Contributors\Collection as ContributorCollection;
+use Ciebit\Leads\Entities\DateTime\Defined as DateTimeDefined;
 use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
 use Ciebit\Leads\Entities\Topics\Topic;
 use Ciebit\Leads\Exceptions\Storage as ExceptionStorage;
@@ -43,6 +45,7 @@ final class Sql implements Database
     private string $filterId;
     private string $filterSlug;
     private ?Status $filterStatus;
+    private string $filterType;
     private PDO $pdo;
     private string $table;
 
@@ -51,6 +54,7 @@ final class Sql implements Database
         $this->filterId = '';
         $this->filterSlug = '';
         $this->filterStatus = null;
+        $this->filterType = '';
         $this->pdo = $pdo;
         $this->table = 'leads_content_view';
     }
@@ -73,6 +77,12 @@ final class Sql implements Database
         return $this;
     }
 
+    public function addFilterByType(string $type): self
+    {
+        $this->filterType = $type;
+        return $this;
+    }
+
     private function bind(array $data): Collection
     {
         $collection = new Collection();
@@ -89,41 +99,33 @@ final class Sql implements Database
 
     private function bindContent(array $data): Content
     {
-        $id = (string) ($data[self::COLUMN_ID] ?? '');
-        $title = (string) ($data[self::COLUMN_TITLE] ?? '');
-        $slug = (string) ($data[self::COLUMN_SLUG] ?? '');
-        $description = (string) ($data[self::COLUMN_DESCRIPTION] ?? '');
-        $content = (string) ($data[self::COLUMN_CONTENT] ?? '');
-        $coverId = (string) ($data[self::COLUMN_COVER_ID] ?? '');
-        $dateTime = (string) ($data[self::COLUMN_DATE_TIME] ?? '0000-01-01 00:00:00');
-        $formLink = (string) ($data[self::COLUMN_FORM_LINK] ?? '');
-        $status = (int) ($data[self::COLUMN_STATUS] ?? STATUS::INACTIVE);
-        $topics = $this->bindTopicCollection(
-            (string) ($data[self::COLUMN_TOPICS] ?? '')
-        );
-        $authors = $this->bindContributorCollection(
-            (string) ($data[self::COLUMN_AUTHORS] ?? '')
-        );
-        $guests = $this->bindContributorCollection(
-            (string) ($data[self::COLUMN_GUESTS] ?? '')
-        );
+        $builderData = new BuilderData();
+        $builderData->id = (string) $data[self::COLUMN_ID];
+        $builderData->title = (string) $data[self::COLUMN_TITLE];
+        $builderData->slug = (string) $data[self::COLUMN_SLUG];
+        $builderData->description = (string) $data[self::COLUMN_DESCRIPTION];
+        $builderData->content = (string) $data[self::COLUMN_CONTENT];
+        $builderData->coverId = (string) $data[self::COLUMN_COVER_ID];
+        $builderData->formLink = (string) $data[self::COLUMN_FORM_LINK];
+        $builderData->type = (string) $data[self::COLUMN_TYPE];
+        $builderData->topics = $this->bindTopicCollection((string) $data[self::COLUMN_TOPICS]);
+        $builderData->authors = $this->bindContributorCollection((string) $data[self::COLUMN_AUTHORS]);
+        $builderData->guests = $this->bindContributorCollection((string) $data[self::COLUMN_GUESTS]);
 
-        $webinar = new Webinar(
-            $title,
-            $slug,
-            $description,
-            $content,
-            new DateTimeImmutable($dateTime),
-            $topics,
-            $authors,
-            $guests,
-            $coverId,
-            new Status($status),
-            $formLink,
-            $id
-        );
 
-        return $webinar;
+        if (empty($data[self::COLUMN_DATE_TIME]) == false) {
+            $builderData->dateTime = new DateTimeDefined($data[self::COLUMN_DATE_TIME]);
+        }
+
+        $status = (int) $data[self::COLUMN_STATUS];
+
+        if (Status::isValid($status)) {
+            $builderData->status = new Status($status);
+        }
+
+        $builder = new ContextBuilder();
+
+        return $builder->build($builderData);
     }
 
     private function bindContributor(array $data): Contributor
@@ -200,6 +202,11 @@ final class Sql implements Database
             $sqlWhere = "`{$this->table}`.`{$column}` = :status";
         }
 
+        if ($this->filterType != null) {
+            $column = self::COLUMN_TYPE;
+            $sqlWhere = "`{$this->table}`.`{$column}` = :type";
+        }
+
         $querySql = "SELECT `{$this->table}`.*
             FROM `{$this->table}`
             WHERE {$sqlWhere}";
@@ -223,6 +230,10 @@ final class Sql implements Database
 
         if ($this->filterStatus != null) {
             $statement->bindValue(':status', $this->filterStatus->getValue(), PDO::PARAM_INT);
+        }
+
+        if ($this->filterType != null) {
+            $statement->bindValue(':type', $this->filterType, PDO::PARAM_STR);
         }
 
         if ($statement->execute() === false) {
