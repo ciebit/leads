@@ -33,6 +33,7 @@ class CollectionTest extends TestCase
             $authors,
             $guests,
             '6',
+            '66',
             $status,
             'http://form-link-1.com'
         );
@@ -46,6 +47,7 @@ class CollectionTest extends TestCase
             $authors,
             $guests,
             '7',
+            '77',
             $status,
             'http://form-link-2.com'
         );
@@ -59,6 +61,7 @@ class CollectionTest extends TestCase
             $authors,
             $guests,
             '8',
+            '88',
             $status,
             'http://form-link-3.com'
         );
@@ -86,6 +89,7 @@ class CollectionTest extends TestCase
                 'authors' => [],
                 'guests' => [],
                 'coverId' => '5',
+                'externalShareCoverId' => '55',
                 'status' => Status::ACTIVE,
                 'formLink' => 'http://form-link-1.com'
             ],
@@ -100,6 +104,7 @@ class CollectionTest extends TestCase
                 'authors' => [],
                 'guests' => [],
                 'coverId' => '6',
+                'externalShareCoverId' => '66',
                 'status' => Status::INACTIVE,
                 'formLink' => 'http://form-link-2.com'
             ]
@@ -118,6 +123,7 @@ class CollectionTest extends TestCase
                 new ContributorsCollection(),
                 new ContributorsCollection(),
                 $webinarData['coverId'],
+                $webinarData['externalShareCoverId'],
                 new Status($webinarData['status']),
                 $webinarData['formLink'],
                 $webinarData['id']

@@ -20,6 +20,7 @@ final class Webinar implements Content
     private string $coverId;
     private DateTime $dateTime;
     private string $description;
+    private string $externalShareCoverId;
     private string $formLink;
     private ContributorsCollection $guests;
     private string $id;
@@ -38,6 +39,7 @@ final class Webinar implements Content
         ContributorsCollection $authors,
         ContributorsCollection $guests,
         string $coverId,
+        string $externalShareCoverId,
         Status $status,
         string $formLink,
         string $id = ''
@@ -47,6 +49,7 @@ final class Webinar implements Content
         $this->coverId = $coverId;
         $this->dateTime = $dateTime;
         $this->description = $description;
+        $this->externalShareCoverId = $externalShareCoverId;
         $this->formLink = $formLink;
         $this->guests = $guests;
         $this->id = $id;
@@ -79,6 +82,11 @@ final class Webinar implements Content
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getExternalShareCoverId(): string
+    {
+        return $this->externalShareCoverId;
     }
 
     public function getFormLink(): string
@@ -129,6 +137,7 @@ final class Webinar implements Content
             'coverId' => $this->getCoverId(),
             'dateTime' => $this->getDateTime()->format(DateTimeInterface::W3C),
             'description' => $this->getDescription(),
+            'externalShareCoverId' => $this->getExternalShareCoverId(),
             'formLink' => $this->getFormLink(),
             'guests' => $this->getGuests(),
             'id' => $this->getId(),

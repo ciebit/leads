@@ -25,6 +25,7 @@ final class Webinar implements Strategy
             $data->authors,
             $data->guests,
             $data->coverId,
+            $data->externalShareCoverId,
             $data->status,
             $data->formLink,
             $data->id

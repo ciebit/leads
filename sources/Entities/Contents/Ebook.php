@@ -20,7 +20,7 @@ final class Ebook implements Content
     private string $coverId;
     private DateTime $dateTime;
     private string $description;
-    private string $formLink;
+    private string $externalShareCoverId;
     private string $id;
     private string $slug;
     private Status $status;
@@ -36,6 +36,7 @@ final class Ebook implements Content
         TopicsCollection $topics,
         ContributorsCollection $authors,
         string $coverId,
+        string $externalShareCoverId = '',
         Status $status,
         string $formLink,
         string $id = ''
@@ -45,6 +46,7 @@ final class Ebook implements Content
         $this->coverId = $coverId;
         $this->dateTime = $dateTime;
         $this->description = $description;
+        $this->externalShareCoverId = $externalShareCoverId;
         $this->formLink = $formLink;
         $this->id = $id;
         $this->slug = $slug;
@@ -76,6 +78,11 @@ final class Ebook implements Content
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    public function getExternalShareCoverId(): string
+    {
+        return $this->externalShareCoverId;
     }
 
     public function getFormLink(): string
@@ -121,6 +128,7 @@ final class Ebook implements Content
             'coverId' => $this->getCoverId(),
             'dateTime' => $this->getDateTime()->format(DateTimeInterface::W3C),
             'description' => $this->getDescription(),
+            'externalShareCoverId' => $this->getExternalShareCoverId(),
             'formLink' => $this->getFormLink(),
             'id' => $this->getId(),
             'slug' => $this->getSlug(),

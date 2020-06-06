@@ -30,6 +30,7 @@ class EbookTest extends TestCase
             $topics,
             $authors,
             '5',
+            '55',
             $status,
             'http://form-link.com'
         );
@@ -58,6 +59,7 @@ class EbookTest extends TestCase
             'topics' => [],
             'authors' => [],
             'coverId' => '5',
+            'externalShareCoverId' => '55',
             'status' => Status::ACTIVE,
             'formLink' => 'http://form-link.com'
         ];
@@ -71,6 +73,7 @@ class EbookTest extends TestCase
             new TopicsCollection(),
             new ContributorsCollection(),
             $data['coverId'],
+            $data['externalShareCoverId'],
             new Status($data['status']),
             $data['formLink'],
             $data['id']

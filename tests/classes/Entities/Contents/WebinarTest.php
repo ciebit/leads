@@ -32,6 +32,7 @@ class WebinarTest extends TestCase
             $authors,
             $guests,
             '5',
+            '55',
             $status,
             'http://form-link.com'
         );
@@ -62,6 +63,7 @@ class WebinarTest extends TestCase
             'authors' => [],
             'guests' => [],
             'coverId' => '5',
+            'externalShareCoverId' => '55',
             'status' => Status::ACTIVE,
             'formLink' => 'http://form-link.com'
         ];
@@ -76,6 +78,7 @@ class WebinarTest extends TestCase
             new ContributorsCollection(),
             new ContributorsCollection(),
             $data['coverId'],
+            $data['externalShareCoverId'],
             new Status($data['status']),
             $data['formLink'],
             $data['id']

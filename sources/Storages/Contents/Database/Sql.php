@@ -16,7 +16,6 @@ use Ciebit\Leads\Entities\Topics\Collection as TopicsCollection;
 use Ciebit\Leads\Entities\Topics\Topic;
 use Ciebit\Leads\Exceptions\Storage as ExceptionStorage;
 use Ciebit\Leads\Storages\Contents\Database\Database;
-use DateTimeImmutable;
 use PDO;
 
 use function is_array;
@@ -29,6 +28,7 @@ final class Sql implements Database
     private const COLUMN_COVER_ID = 'cover_id';
     private const COLUMN_DESCRIPTION = 'description';
     private const COLUMN_DATE_TIME = 'date_time';
+    private const COLUMN_EXTERNAL_SHARE_COVER_ID = 'external_share_cover_id';
     private const COLUMN_FORM_LINK = 'form_link';
     private const COLUMN_ID = 'id';
     private const COLUMN_SLUG = 'slug';
@@ -106,6 +106,7 @@ final class Sql implements Database
         $builderData->description = (string) $data[self::COLUMN_DESCRIPTION];
         $builderData->content = (string) $data[self::COLUMN_CONTENT];
         $builderData->coverId = (string) $data[self::COLUMN_COVER_ID];
+        $builderData->externalShareCoverId = (string) $data[self::COLUMN_EXTERNAL_SHARE_COVER_ID];
         $builderData->formLink = (string) $data[self::COLUMN_FORM_LINK];
         $builderData->type = (string) $data[self::COLUMN_TYPE];
         $builderData->topics = $this->bindTopicCollection((string) $data[self::COLUMN_TOPICS]);

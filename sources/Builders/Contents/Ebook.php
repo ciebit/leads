@@ -24,6 +24,7 @@ final class Ebook implements Strategy
             $data->topics,
             $data->authors,
             $data->coverId,
+            $data->externalShareCoverId,
             $data->status,
             $data->formLink,
             $data->id

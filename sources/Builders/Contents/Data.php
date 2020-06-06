@@ -17,6 +17,7 @@ final class Data
     public string $coverId;
     public DateTime $dateTime;
     public string $description;
+    public string $externalShareCoverId;
     public string $formLink;
     public ContributorsCollection $guests;
     public string $id;
@@ -33,6 +34,7 @@ final class Data
         $this->coverId = '';
         $this->dateTime = new DateTimeUndefined();
         $this->description = '';
+        $this->externalShareCoverId = '';
         $this->formLink = '';
         $this->guests = new ContributorsCollection();
         $this->id = '';

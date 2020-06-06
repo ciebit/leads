@@ -15,7 +15,11 @@ interface Content extends JsonSerializable
 
     public function getContent(): string;
 
+    public function getCoverId(): string;
+
     public function getDescription(): string;
+
+    public function getExternalShareCoverId(): string;
 
     public function getId(): string;
 
