@@ -25,6 +25,9 @@ final class Sql implements Database
 
     private string $filterContentId;
     private string $filterId;
+    private int $limit;
+    private int $offset;
+    private array $order;
     private PDO $pdo;
     private string $table;
 
@@ -32,6 +35,9 @@ final class Sql implements Database
     {
         $this->filterContentId = '';
         $this->filterId = '';
+        $this->limit = 30;
+        $this->offset = 0;
+        $this->order = [];
         $this->pdo = $pdo;
         $this->table = 'leads_records';
     }
@@ -48,10 +54,17 @@ final class Sql implements Database
         return $this;
     }
 
+    public function addOrderBy(string $column, string $order = 'ASC'): self
+    {
+        $this->order[] = [$column, $order];
+        return $this;
+    }
+
     public function find(): Collection
     {
         $filters = [];
         $sqlWhere = '1';
+        $sqlOrder = '';
 
         if ($this->filterContentId != '') {
             $column = self::COLUMN_CONTENT_ID;
@@ -67,9 +80,16 @@ final class Sql implements Database
             $sqlWhere = implode(' AND ', $filters);
         }
 
+        if (count($this->order) > 0) {
+            $order = array_map(fn($orderItem) => implode(' ', $orderItem), $this->order);
+            $sqlOrder = "ORDER BY ". implode(',', $order);
+        }
+
         $querySql = "SELECT `{$this->table}`.*
             FROM `{$this->table}`
-            WHERE {$sqlWhere}";
+            WHERE {$sqlWhere}
+            {$sqlOrder}
+            LIMIT {$this->offset}, {$this->limit}";
 
         $statement = $this->pdo->prepare($querySql);
 
@@ -102,6 +122,18 @@ final class Sql implements Database
         }
 
         return $this->build($data);
+    }
+
+    public function setLimit(int $limit): self
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
+    public function setOffset(int $offset): self
+    {
+        $this->offset = $offset;
+        return $this;
     }
 
     public function store(Record $record): Record

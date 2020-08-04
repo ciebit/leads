@@ -59,6 +59,28 @@ class SqlTest extends TestCase
         $this->assertCount(0, $collection);
     }
 
+    public function testLimit(): void
+    {
+        $storage = $this->getStorage();
+        $storage->setLimit(1);
+        $storage->setOffset(1);
+
+        $collection = $storage->find();
+
+        $this->assertCount(1, $collection);
+        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
+    public function testOrderBy(): void
+    {
+        $storage = $this->getStorage();
+        $storage->addOrderBy('date_time', 'DESC');
+
+        $collection = $storage->find();
+
+        $this->assertEquals('4', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
     public function testStore(): void
     {
         $record = new Record('1', 'Name', 'name@mail.com', '8812341234', 2);
