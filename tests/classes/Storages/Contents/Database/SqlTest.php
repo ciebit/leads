@@ -78,6 +78,28 @@ class SqlTest extends TestCase
         $this->assertEquals('3', $content->getId());
     }
 
+    public function testLimit(): void
+    {
+        $storage = $this->getStorage();
+        $storage->setLimit(1);
+        $storage->setOffset(1);
+
+        $collection = $storage->find();
+
+        $this->assertCount(1, $collection);
+        $this->assertEquals('2', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
+    public function testOrderBy(): void
+    {
+        $storage = $this->getStorage();
+        $storage->addOrderBy('slug', 'DESC');
+
+        $collection = $storage->find();
+
+        $this->assertEquals('4', $collection->getArrayObject()->offsetGet(0)->getId());
+    }
+
     private function getStorage(): Sql
     {
         $pdoFactory = new PdoFactory();

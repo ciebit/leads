@@ -46,6 +46,9 @@ final class Sql implements Database
     private string $filterSlug;
     private ?Status $filterStatus;
     private string $filterType;
+    private int $limit;
+    private int $offset;
+    private array $order;
     private PDO $pdo;
     private string $table;
 
@@ -55,6 +58,9 @@ final class Sql implements Database
         $this->filterSlug = '';
         $this->filterStatus = null;
         $this->filterType = '';
+        $this->limit = 30;
+        $this->offset = 0;
+        $this->order = [];
         $this->pdo = $pdo;
         $this->table = 'leads_content_view';
     }
@@ -80,6 +86,12 @@ final class Sql implements Database
     public function addFilterByType(string $type): self
     {
         $this->filterType = $type;
+        return $this;
+    }
+
+    public function addOrderBy(string $column, string $order = 'ASC'): self
+    {
+        $this->order[] = [$column, $order];
         return $this;
     }
 
@@ -188,6 +200,7 @@ final class Sql implements Database
     {
         $filters = [];
         $sqlWhere = '1';
+        $sqlOrder = '';
 
         if ($this->filterSlug != '') {
             $column = self::COLUMN_SLUG;
@@ -213,9 +226,19 @@ final class Sql implements Database
             $sqlWhere = implode(' AND ', $filters);
         }
 
+        if (count($this->order) > 0) {
+            $order = array_map(
+                fn($orderItem) => implode(' ', $orderItem), 
+                $this->order
+            );
+            $sqlOrder = "ORDER BY " . implode(',', $order);
+        }
+
         $querySql = "SELECT `{$this->table}`.*
             FROM `{$this->table}`
-            WHERE {$sqlWhere}";
+            WHERE {$sqlWhere}
+            {$sqlOrder}
+            LIMIT {$this->offset}, {$this->limit}";
 
         $statement = $this->pdo->prepare($querySql);
 
@@ -257,5 +280,17 @@ final class Sql implements Database
         }
 
         return $this->bind($data);
+    }
+
+    public function setLimit(int $limit): self
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
+    public function setOffset(int $offset): self
+    {
+        $this->offset = $offset;
+        return $this;
     }
 }

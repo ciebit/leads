@@ -17,5 +17,11 @@ interface Storage
 
     public function addFilterByStatus(Status $status): self;
 
+    public function addOrderBy(string $column, string $order = 'ASC'): self;
+
     public function find(): Collection;
+
+    public function setLimit(int $total): self;
+
+    public function setOffset(int $offset): self;
 }
